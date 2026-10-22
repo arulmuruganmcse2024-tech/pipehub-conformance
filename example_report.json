@@ -1,0 +1,110 @@
+{
+ "tool": "pipehub-check",
+ "version": "0.1.0",
+ "controller": "http://127.0.0.1:8099",
+ "pipes": [
+  "kitchen1",
+  "toilet"
+ ],
+ "outlets": [
+  "tub"
+ ],
+ "lease_s": 3.0,
+ "travel_max_s": 6.0,
+ "checks": [
+  {
+   "id": "C01",
+   "title": "Rejects a missing or wrong token with 401, and a rejected command moves nothing",
+   "status": "PASS",
+   "detail": "401 for no token and a wrong token; nothing moved",
+   "seconds": 1.0
+  },
+  {
+   "id": "C02",
+   "title": "Lists every declared valve with a measured position and a lease field",
+   "status": "PASS",
+   "detail": "3 valves listed",
+   "seconds": 0.0
+  },
+  {
+   "id": "C03",
+   "title": "Every declared valve starts at rest: pipes open, outlets closed, no leases",
+   "status": "PASS",
+   "detail": "all at rest",
+   "seconds": 0.0
+  },
+  {
+   "id": "C04",
+   "title": "An unknown valve is 404",
+   "status": "PASS",
+   "detail": "404 for GET and PUT",
+   "seconds": 0.0
+  },
+  {
+   "id": "C05",
+   "title": "Malformed commands are 400 and move nothing",
+   "status": "PASS",
+   "detail": "7 malformed bodies refused, nothing moved; an unknown field was ignored",
+   "seconds": 1.0
+  },
+  {
+   "id": "C06",
+   "title": "An outlet never opens without a lease",
+   "status": "PASS",
+   "detail": "400; the outlet stayed closed",
+   "seconds": 1.0
+  },
+  {
+   "id": "C07",
+   "title": "Moves to the commanded position and reports it within the travel limit; commanding rest clears the lease",
+   "status": "PASS",
+   "detail": "kitchen1 1.6 s there, 1.6 s back; tub 1.6 s there, 1.6 s back",
+   "seconds": 6.6
+  },
+  {
+   "id": "C08",
+   "title": "Caps leases itself: at most 300 s for a pipe, 60 s for an outlet",
+   "status": "PASS",
+   "detail": "kitchen1 held 300 s; tub held 60 s",
+   "seconds": 3.3
+  },
+  {
+   "id": "C09",
+   "title": "A pipe's lease ends on the controller's own clock: it reopens with nothing sent",
+   "status": "PASS",
+   "detail": "kitchen1 back to open on its own after a 3.0 s lease, with nothing sent",
+   "seconds": 10.5
+  },
+  {
+   "id": "C10",
+   "title": "An outlet's lease ends on the controller's own clock: it closes with nothing sent",
+   "status": "PASS",
+   "detail": "tub back to closed on its own after a 3.0 s lease, with nothing sent",
+   "seconds": 10.5
+  },
+  {
+   "id": "C11",
+   "title": "Sending the same command again renews the lease",
+   "status": "PASS",
+   "detail": "renewed at 1.8 s; still closed past the original end",
+   "seconds": 6.9
+  },
+  {
+   "id": "C12",
+   "title": "A pipe held with no lease stays closed until it is told to open",
+   "status": "PASS",
+   "detail": "stayed closed with no lease, reopened on request",
+   "seconds": 7.8
+  },
+  {
+   "id": "C13",
+   "title": "Transport: HTTPS, unless the controller is on this machine or --allow-insecure-lan is given",
+   "status": "PASS",
+   "detail": "plain HTTP on localhost (allowed for testing)",
+   "seconds": 0.0
+  }
+ ],
+ "failed": [],
+ "passed": true,
+ "seconds": 48.7
+}

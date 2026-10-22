@@ -1,0 +1,28 @@
+PASS  C01  Rejects a missing or wrong token with 401, and a rejected command moves nothing
+        401 for no token and a wrong token; nothing moved
+PASS  C02  Lists every declared valve with a measured position and a lease field
+        3 valves listed
+PASS  C03  Every declared valve starts at rest: pipes open, outlets closed, no leases
+        all at rest
+PASS  C04  An unknown valve is 404
+        404 for GET and PUT
+PASS  C05  Malformed commands are 400 and move nothing
+        7 malformed bodies refused, nothing moved; an unknown field was ignored
+PASS  C06  An outlet never opens without a lease
+        400; the outlet stayed closed
+PASS  C07  Moves to the commanded position and reports it within the travel limit; commanding rest clears the lease
+        kitchen1 1.6 s there, 1.6 s back; tub 1.6 s there, 1.6 s back
+PASS  C08  Caps leases itself: at most 300 s for a pipe, 60 s for an outlet
+        kitchen1 held 300 s; tub held 60 s
+PASS  C09  A pipe's lease ends on the controller's own clock: it reopens with nothing sent
+        kitchen1 back to open on its own after a 3.0 s lease, with nothing sent
+PASS  C10  An outlet's lease ends on the controller's own clock: it closes with nothing sent
+        tub back to closed on its own after a 3.0 s lease, with nothing sent
+PASS  C11  Sending the same command again renews the lease
+        renewed at 1.8 s; still closed past the original end
+PASS  C12  A pipe held with no lease stays closed until it is told to open
+        stayed closed with no lease, reopened on request
+PASS  C13  Transport: HTTPS, unless the controller is on this machine or --allow-insecure-lan is given
+        plain HTTP on localhost (allowed for testing)
+
+PASSED  (13 checks, 48.7 s)
